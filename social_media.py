@@ -22,14 +22,20 @@ def init(article):
     TWITTER_SITE = article.settings.get('TWITTER_SITE', None)
     AUTHOR_MAP = article.settings.get('AUTHOR_MAP', default_author_map)
 
+    def get_mapped_author(author, key):
+        if AUTHOR_MAP and author in AUTHOR_MAP and key in AUTHOR_MAP[author]:
+            return AUTHOR_MAP[author][key]
+        else:
+            return None
+
     image_path = article.metadata.get('image', None) or DEFAULT_IMAGE
     image = urljoin(SITEURL, image_path) if image_path else None
     article_url = urljoin(SITEURL, article.url)
     summary = article.metadata.get('summary', None) or article.summary
     authors = [author.name for author in article.authors]
     tags = [tag.name for tag in article.tags] if hasattr(article, 'tags') else None
-    og_authors = [AUTHOR_MAP['open_graph'].get(author, author) for author in authors]
-    tw_author = AUTHOR_MAP['twitter'].get(authors[0], None)
+    og_authors = [get_mapped_author(author, 'open_graph') or author for author in authors]
+    tw_author = get_mapped_author(authors[0], 'twitter')
     twitter_card = article.metadata.get('twitter_card', None) or DEFAULT_TWITTER_CARD
 
     if TWITTER_SITE and not TWITTER_SITE.startswith('@'):
