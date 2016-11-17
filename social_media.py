@@ -23,7 +23,7 @@ def init(article):
     AUTHOR_MAP = article.settings.get('AUTHOR_MAP', default_author_map)
 
     image_path = article.metadata.get('image', None) or DEFAULT_IMAGE
-    image = urljoin(SITEURL, image_path)
+    image = urljoin(SITEURL, image_path) if image_path else None
     article_url = urljoin(SITEURL, article.url)
     summary = article.metadata.get('summary', None) or article.summary
     authors = [author.name for author in article.authors]
