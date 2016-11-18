@@ -11,16 +11,12 @@ from pelican.utils import strftime
 def init(article):
     if not isinstance(article, Article):
         return
-    default_author_map = {
-        'open_graph': {},
-        'twitter': {},
-    }
     SITEURL = article.settings.get('SITEURL', '')
     SITENAME = article.settings.get('SITENAME')
     DEFAULT_IMAGE = article.settings.get('DEFAULT_IMAGE', None)
     DEFAULT_TWITTER_CARD = article.settings.get('DEFAULT_TWITTER_CARD', 'summary')
     TWITTER_SITE = article.settings.get('TWITTER_SITE', None)
-    AUTHOR_MAP = article.settings.get('AUTHOR_MAP', default_author_map)
+    AUTHOR_MAP = article.settings.get('AUTHOR_MAP', None)
 
     def get_mapped_author(author, key):
         if AUTHOR_MAP and author in AUTHOR_MAP and key in AUTHOR_MAP[author]:
